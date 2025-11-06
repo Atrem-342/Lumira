@@ -1,3 +1,113 @@
-<html>
-  
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lumira Tutor Playground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="frontend/styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Lumira Tutor Playground</h1>
+      <p>Run the tutoring pipeline with the bundled demo data or your own API.</p>
+    </header>
+
+    <main>
+      <section class="controls-card">
+        <form id="query-form">
+          <div>
+            <label for="query">Learner question</label>
+            <textarea
+              id="query"
+              name="query"
+              placeholder="e.g. Explain the water cycle for middle school students"
+              spellcheck="true"
+              required
+            ></textarea>
+            <p class="helper-text">
+              Tip: you can switch off demo mode below to call your own HTTP endpoint.
+              The frontend sends a <code>POST</code> request with a JSON body
+              <code>{"query": "..."}</code> and expects a Lumira-style JSON response.
+            </p>
+          </div>
+
+          <div class="inline-control">
+            <input type="checkbox" id="use-demo" name="use-demo" checked />
+            <label for="use-demo">Use built-in demo data (no backend required)</label>
+          </div>
+
+          <div>
+            <label for="endpoint">Custom API endpoint</label>
+            <input
+              type="url"
+              id="endpoint"
+              name="endpoint"
+              value="http://localhost:8000/api/tutor"
+              placeholder="http://localhost:8000/api/tutor"
+            />
+            <p class="helper-text">
+              Disable the demo toggle to enable this field. Point it at a server that
+              wraps <code>lumira_tutoragent.ui.web_app.run_tutoring_cycle</code> to run
+              the real multi-agent pipeline.
+            </p>
+          </div>
+
+          <div class="inline-control">
+            <button type="submit">Run tutoring cycle</button>
+            <button type="button" id="export-json" disabled>Download JSON</button>
+            <span id="status" class="status hidden" role="status"></span>
+          </div>
+        </form>
+      </section>
+
+      <section id="results" class="results-grid hidden" aria-live="polite">
+        <article class="card">
+          <h2>Analysis</h2>
+          <ul id="analysis-list"></ul>
+        </article>
+
+        <article class="card">
+          <h2>Instructional plan</h2>
+          <ul id="plan-list"></ul>
+        </article>
+
+        <article class="card">
+          <h2>Explanation</h2>
+          <ul id="explanation-list"></ul>
+        </article>
+
+        <article class="card">
+          <h2>Fact check</h2>
+          <ul id="fact-check-list"></ul>
+        </article>
+
+        <article class="card">
+          <h2>Quiz items</h2>
+          <ul id="quiz-list"></ul>
+        </article>
+
+        <article class="card">
+          <h2>Learner profile update</h2>
+          <ul id="profile-list"></ul>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      Open this file directly in your browser for the mock experience, or serve it
+      alongside a minimal Python API that wraps <code>run_tutoring_cycle</code> from
+      <code>lumira_tutoragent.ui.web_app</code>. For example, expose a FastAPI or Flask
+      endpoint that accepts a JSON body with a <code>query</code> field and returns the
+      response from the tutoring pipeline.
+    </footer>
+
+    <script src="frontend/sample_data.js"></script>
+    <script src="frontend/app.js"></script>
+  </body>
 </html>
